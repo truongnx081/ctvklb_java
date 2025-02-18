@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="CTV">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/api-gateway.zip!/" />
+      <root url="jar://$PROJECT_DIR$/notification-service.zip!/" />
+      <root url="jar://$PROJECT_DIR$/core-service.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
