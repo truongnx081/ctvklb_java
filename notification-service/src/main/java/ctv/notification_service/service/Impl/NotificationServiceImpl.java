@@ -1,4 +1,4 @@
-package ctv.notification_service.Impl;
+package ctv.notification_service.service.Impl;
 
 
 import ctv.common_api.service.NotificationService;

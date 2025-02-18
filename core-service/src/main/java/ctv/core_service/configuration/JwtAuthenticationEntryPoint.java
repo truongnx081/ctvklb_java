@@ -1,17 +1,20 @@
 package ctv.core_service.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import ctv.core_service.exception.ErrorCode;
-import ctv.core_service.exception.ErrorResponse;
+import java.io.IOException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ctv.core_service.exception.ErrorCode;
+import ctv.core_service.exception.ErrorResponse;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -34,10 +37,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(errorCode.getHttpStatusCode().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                errorCode.getHttpStatusCode().value(),
-                errorMessage
-        );
+        ErrorResponse errorResponse =
+                new ErrorResponse(errorCode.getHttpStatusCode().value(), errorMessage);
 
         ObjectMapper objectMapper = new ObjectMapper();
 

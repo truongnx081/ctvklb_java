@@ -1,4 +1,3 @@
 package ctv.core_service.service;
 
-public interface EnrollmentService {
-}
+public interface EnrollmentService {}

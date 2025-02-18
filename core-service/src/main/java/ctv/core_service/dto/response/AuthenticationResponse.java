@@ -1,4 +1,5 @@
 package ctv.core_service.dto.response;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

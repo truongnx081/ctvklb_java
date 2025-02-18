@@ -1,9 +1,9 @@
-package ctv.event.dto;
+package event.dto;
+
+import java.util.Map;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,7 @@ public class NotificationEvent {
     String chanel;
     String recipient;
     String templateCode;
-    Map<String, Object>param;
+    Map<String, Object> param;
     String subject;
     String body;
 }

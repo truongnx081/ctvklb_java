@@ -1,4 +1,4 @@
-package ctv.dto;
+package event.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

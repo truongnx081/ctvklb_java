@@ -1,15 +1,17 @@
 package ctv.core_service.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Setter
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class Enrollment {
     Course course;
 
     LocalDateTime enrollmentDate;
+
     @CreatedDate
     @Column(name = "date_created", nullable = false, updatable = false)
     LocalDateTime dateCreated;

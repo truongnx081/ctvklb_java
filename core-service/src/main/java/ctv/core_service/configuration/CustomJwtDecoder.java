@@ -1,7 +1,8 @@
 package ctv.core_service.configuration;
 
-import ctv.core_service.dto.request.IntrospectRequest;
-import ctv.core_service.service.AuthenticationService;
+import java.util.Objects;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -10,8 +11,8 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Objects;
+import ctv.core_service.dto.request.IntrospectRequest;
+import ctv.core_service.service.AuthenticationService;
 
 @Component
 public class CustomJwtDecoder implements JwtDecoder {
@@ -29,9 +30,9 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
 
-        var response =
-                authenticationService.introspect(IntrospectRequest.builder().token(token).build());
-//        System.out.println("response: "+response.isValid());
+        var response = authenticationService.introspect(
+                IntrospectRequest.builder().token(token).build());
+        //        System.out.println("response: "+response.isValid());
         if (!response.isValid()) throw new JwtException("Token invalid");
 
         if (Objects.isNull(nimbusJwtDecoder)) {

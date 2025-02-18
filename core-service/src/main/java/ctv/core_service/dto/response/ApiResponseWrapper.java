@@ -12,5 +12,4 @@ public class ApiResponseWrapper<T> {
     int status;
     String message;
     T data;
-
 }

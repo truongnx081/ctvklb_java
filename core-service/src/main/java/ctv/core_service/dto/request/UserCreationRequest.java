@@ -1,12 +1,13 @@
 package ctv.core_service.dto.request;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,9 +21,7 @@ public class UserCreationRequest {
 
     @NotBlank(message = "{message.user.username.required}")
     @Size(min = 5, message = "{message.user.username.invalid}")
-    @Pattern(
-            regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9]+$",
-            message = "{message.user.username.format}")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9]+$", message = "{message.user.username.format}")
     String userName;
 
     String lastName;
@@ -35,10 +34,7 @@ public class UserCreationRequest {
     String password;
 
     @NotBlank(message = "{message.user.email.required}")
-    @Pattern(
-            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
-            message = "{message.user.email.invalid}"
-    )
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "{message.user.email.invalid}")
     String email;
 
     LocalDateTime dateCreated;

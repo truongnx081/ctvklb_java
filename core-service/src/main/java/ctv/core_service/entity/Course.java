@@ -1,20 +1,23 @@
 package ctv.core_service.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Setter
 @AllArgsConstructor
@@ -25,6 +28,7 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String courseName;
     String description;
 
@@ -35,8 +39,8 @@ public class Course {
     @LastModifiedDate
     @Column(name = "date_updated", insertable = false)
     LocalDateTime dateUpdated;
-    @Schema(description = "Created by", defaultValue = "TruongNX")
 
+    @Schema(description = "Created by", defaultValue = "TruongNX")
     @CreatedBy
     @Column(name = "created_by")
     String createdBy;
