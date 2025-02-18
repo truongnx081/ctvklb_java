@@ -1,14 +1,14 @@
-package ctv.core_service.service.Impl;//package demo.service.Impl;
+package ctv.core_service.service.Impl; // package demo.service.Impl;
 //
-//import demo.service.WorkflowService;
-//import demo.temporal.MyWorkFlow;
-//import io.temporal.client.WorkflowClient;
-//import io.temporal.client.WorkflowOptions;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
+// import demo.service.WorkflowService;
+// import demo.temporal.MyWorkFlow;
+// import io.temporal.client.WorkflowClient;
+// import io.temporal.client.WorkflowOptions;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 //
-//@Service
-//public class WorkflowServiceImpl implements WorkflowService {
+// @Service
+// public class WorkflowServiceImpl implements WorkflowService {
 //    @Autowired
 //    private WorkflowClient workflowClient;
 //
@@ -20,4 +20,4 @@ package ctv.core_service.service.Impl;//package demo.service.Impl;
 //        MyWorkFlow workflow = workflowClient.newWorkflowStub(MyWorkFlow.class, options);
 //        return workflow.executeWorkflow(input);
 //    }
-//}
+// }

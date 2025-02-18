@@ -1,14 +1,14 @@
 package ctv.core_service.dto.request;
 
+import java.time.LocalDateTime;
 
-import ctv.core_service.entity.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import ctv.core_service.entity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,10 +26,7 @@ public class UserUpdationRequest {
     String password;
 
     @NotBlank(message = "{message.user.email.required}")
-    @Pattern(
-            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
-            message = "{message.user.email.invalid}"
-    )
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "{message.user.email.invalid}")
     String email;
 
     String lastModifiedBy;

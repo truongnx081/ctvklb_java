@@ -15,9 +15,6 @@ public class MyMessage {
 
     @Override
     public String toString() {
-        return "MyMessage{" +
-                "content='" + content + '\'' +
-                ", sender='" + sender + '\'' +
-                '}';
+        return "MyMessage{" + "content='" + content + '\'' + ", sender='" + sender + '\'' + '}';
     }
 }

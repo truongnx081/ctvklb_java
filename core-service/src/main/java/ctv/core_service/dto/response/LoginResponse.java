@@ -12,5 +12,4 @@ public class LoginResponse {
     private int ExpiresIn;
     private String RefreshToken;
     private String TokenType;
-
 }

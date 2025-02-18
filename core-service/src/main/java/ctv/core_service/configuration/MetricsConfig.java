@@ -1,13 +1,14 @@
 package ctv.core_service.configuration;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
 public class MetricsConfig {

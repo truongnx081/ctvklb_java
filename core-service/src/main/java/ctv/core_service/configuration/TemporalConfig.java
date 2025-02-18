@@ -1,12 +1,12 @@
-package ctv.core_service.configuration;//package demo.configuration;
+package ctv.core_service.configuration; // package demo.configuration;
 //
-//import io.temporal.client.WorkflowClient;
-//import io.temporal.serviceclient.WorkflowServiceStubs;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
+// import io.temporal.client.WorkflowClient;
+// import io.temporal.serviceclient.WorkflowServiceStubs;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 //
-//@Configuration
-//public class TemporalConfig {
+// @Configuration
+// public class TemporalConfig {
 //
 //    @Bean
 //    public WorkflowClient workflowClient() {
@@ -14,5 +14,5 @@ package ctv.core_service.configuration;//package demo.configuration;
 //        WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
 //        return WorkflowClient.newInstance(service);
 //    }
-//}
+// }
 //
