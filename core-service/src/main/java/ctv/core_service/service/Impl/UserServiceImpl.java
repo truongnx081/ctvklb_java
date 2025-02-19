@@ -1,9 +1,22 @@
 package ctv.core_service.service.Impl;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+import ctv.core_service.exception.ErrorResponse;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,10 +48,11 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     KafkaTemplate<String, Object> kafkaTemplate;
-
+    MessageSource messageSource;
     @DubboReference
     NotificationService notificationService;
 
+    @Cacheable(cacheNames = "users")
     @Override
     public List<UserResponse> getAllUser() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
@@ -84,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
-
+    @Cacheable(cacheNames = "user", key = "#userId")
     @Override
     public UserResponse getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -92,11 +106,17 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponse(user);
     }
 
+    @CacheEvict(cacheNames = "user", key = "#userId")
     @Override
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
+    @CircuitBreaker(name = "getMyInformationService", fallbackMethod = "fallbackResponseCircuitBreaker")
+    @TimeLimiter(name = "getMyInformationService", fallbackMethod = "fallbackResponseTimeLimiter")
+    @Retry(name = "getMyInformationService", fallbackMethod = "fallbackResponseRetry")
+    @RateLimiter(name = "getMyInformationService", fallbackMethod = "fallbackResponseRateLimiter")
+    @Bulkhead(name = "getMyInformationService", fallbackMethod = "fallbackResponseBulkhead")
     @Override
     public UserResponse getMyInfor() {
         var context = SecurityContextHolder.getContext();
@@ -104,4 +124,31 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserName(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
+
+    @Override
+    public UserResponse fallbackResponseCircuitBreaker(Exception e) {
+        throw new AppException(ErrorCode.SERVICE_UNAVAILABLE);
+    }
+
+    @Override
+    public UserResponse fallbackResponseRetry(Exception e) {
+        throw new AppException(ErrorCode.TOO_MANY_ATTEMPTS);
+    }
+
+    @Override
+    public UserResponse fallbackResponseRateLimiter(Exception e) {
+        throw new AppException(ErrorCode.RATE_LIMIT_EXCEEDED);
+    }
+
+
+    @Override
+    public UserResponse fallbackResponseBulkhead(Exception e) {
+        throw new AppException(ErrorCode.SYSTEM_OVERLOADED);
+    }
+
+    @Override
+    public CompletableFuture<UserResponse> fallbackResponseTimeLimiter(Exception e) {
+        throw new AppException(ErrorCode.SYSTEM_OVERLOADED);
+    }
+
 }

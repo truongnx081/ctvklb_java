@@ -1,6 +1,7 @@
 package ctv.core_service.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import ctv.core_service.dto.request.UserCreationRequest;
 import ctv.core_service.dto.request.UserUpdationRequest;
@@ -19,4 +20,10 @@ public interface UserService {
     void deleteUserById(Long userId);
 
     UserResponse getMyInfor();
+    UserResponse fallbackResponseCircuitBreaker(Exception e);
+    UserResponse fallbackResponseRetry(Exception e);
+    UserResponse fallbackResponseRateLimiter(Exception e);
+    UserResponse fallbackResponseBulkhead(Exception e);
+    CompletableFuture<UserResponse> fallbackResponseTimeLimiter(Exception e);
+
 }
