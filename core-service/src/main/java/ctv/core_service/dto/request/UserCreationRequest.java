@@ -1,5 +1,6 @@
 package ctv.core_service.dto.request;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class UserCreationRequest {
+public class UserCreationRequest implements Serializable {
 
     Long id;
 

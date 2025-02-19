@@ -20,7 +20,14 @@ import lombok.AllArgsConstructor;
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
-
+//    @ExceptionHandler(value = Exception.class)
+//    ResponseEntity<ErrorResponse> handlingRuntimeException(RuntimeException exception) {
+//        ErrorResponse errorResponse = new ErrorResponse();
+//
+//        errorResponse.setStatusCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getHttpStatusCode().value());
+//        errorResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+//        return ResponseEntity.badRequest().body(errorResponse);
+//    }
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ErrorResponse> handleAppException(AppException ex) {
         String message =

@@ -4,8 +4,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -42,7 +41,7 @@ public class UserController {
     private final UserService userService;
     private final MessageSource messageSource;
 
-    @Cacheable(value = "users", key = "#user")
+
     @Operation(summary = "Get all list user", description = "")
     @ApiResponses(
             value = {
@@ -71,10 +70,11 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<ApiResponseWrapper<List<UserResponse>>> getAllUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ApiResponseWrapper<List<UserResponse>> response = new ApiResponseWrapper<>(
                 HttpStatus.OK.value(),
-                messageSource.getMessage("message.get.all.user.success", null, LocaleContextHolder.getLocale()),
+                messageSource.getMessage("message.get.all.user.success",
+                        null,
+                        LocaleContextHolder.getLocale()),
                 userService.getAllUser());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -104,7 +104,6 @@ public class UserController {
 						""")))
             })
     @PreAuthorize("hasRole('ADMIN')")
-    @CachePut(value = "users", key = "#request.username")
     @PostMapping("")
     public ResponseEntity<ApiResponseWrapper<UserResponse>> createUser(
             @RequestBody @Valid UserCreationRequest request) {
@@ -145,7 +144,6 @@ public class UserController {
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
     @PreAuthorize("hasRole('ADMIN')")
-    @CachePut(value = "users", key = "#user.id")
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponseWrapper<UserResponse>> updateUser(
             @PathVariable Long userId, @RequestBody @Valid UserUpdationRequest request) {
@@ -196,7 +194,6 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @CacheEvict(value = "users", key = "#userId")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponseWrapper<String>> deleteUserById(
@@ -234,6 +231,7 @@ public class UserController {
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
     @PreAuthorize("hasRole('USER')")
+
     @GetMapping("/my-infor")
     public ResponseEntity<ApiResponseWrapper<UserResponse>> getMyInfor() {
         ApiResponseWrapper<UserResponse> response = new ApiResponseWrapper<>(
