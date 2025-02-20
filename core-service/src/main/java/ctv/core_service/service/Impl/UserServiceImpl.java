@@ -3,20 +3,11 @@ package ctv.core_service.service.Impl;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import ctv.core_service.exception.ErrorResponse;
-import io.github.resilience4j.bulkhead.annotation.Bulkhead;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +24,11 @@ import ctv.core_service.mapper.UserMapper;
 import ctv.core_service.repository.UserRepository;
 import ctv.core_service.service.UserService;
 import event.dto.NotificationEvent;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -49,6 +45,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
     KafkaTemplate<String, Object> kafkaTemplate;
     MessageSource messageSource;
+
     @DubboReference
     NotificationService notificationService;
 
@@ -81,8 +78,6 @@ public class UserServiceImpl implements UserService {
                 .build();
         kafkaTemplate.send("notification-delivery", notificationEvent);
 
-        //        kafkaTemplate.send("onboard","Kafka Welcome to "+ request.getUserName());
-        //        log.info("Dubbo Welcome to: "+ notificationService.sendNotification(request.getUserName()));
         return userMapper.toUserResponse(user);
     }
 
@@ -98,9 +93,11 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
-    @Cacheable(cacheNames = "user", key = "#userId")
+
+    @Cacheable(cacheNames = "user:details", key = "#userId")
     @Override
     public UserResponse getUserById(Long userId) {
+        log.info("Fetching user {} from database", userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         return userMapper.toUserResponse(user);
@@ -140,7 +137,6 @@ public class UserServiceImpl implements UserService {
         throw new AppException(ErrorCode.RATE_LIMIT_EXCEEDED);
     }
 
-
     @Override
     public UserResponse fallbackResponseBulkhead(Exception e) {
         throw new AppException(ErrorCode.SYSTEM_OVERLOADED);
@@ -150,5 +146,4 @@ public class UserServiceImpl implements UserService {
     public CompletableFuture<UserResponse> fallbackResponseTimeLimiter(Exception e) {
         throw new AppException(ErrorCode.SYSTEM_OVERLOADED);
     }
-
 }

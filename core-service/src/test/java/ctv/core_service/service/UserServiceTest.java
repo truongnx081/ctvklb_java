@@ -1,28 +1,28 @@
-//package ctv.core_service.service;
+// package ctv.core_service.service;
 //
-//import ctv.core_service.dto.request.UserCreationRequest;
-//import ctv.core_service.dto.response.UserResponse;
-//import ctv.core_service.entity.Role;
-//import ctv.core_service.entity.User;
-//import ctv.core_service.exception.AppException;
-//import ctv.core_service.exception.ErrorCode;
-//import ctv.core_service.repository.UserRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
+// import ctv.core_service.dto.request.UserCreationRequest;
+// import ctv.core_service.dto.response.UserResponse;
+// import ctv.core_service.entity.Role;
+// import ctv.core_service.entity.User;
+// import ctv.core_service.exception.AppException;
+// import ctv.core_service.exception.ErrorCode;
+// import ctv.core_service.repository.UserRepository;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.mockito.Mockito;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.boot.test.mock.mockito.MockBean;
 //
-//import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 //
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.ArgumentMatchers.anyString;
+// import static org.assertj.core.api.Assertions.assertThat;
+// import static org.junit.jupiter.api.Assertions.assertThrows;
+// import static org.mockito.ArgumentMatchers.any;
+// import static org.mockito.ArgumentMatchers.anyString;
 //
-//@SpringBootTest
-//public class UserServiceTest {
+// @SpringBootTest
+// public class UserServiceTest {
 //
 //    @Autowired
 //    private  UserService userService;
@@ -104,25 +104,24 @@
 //        Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("DB Error"));
 //
 //        // When
-//        var exception = assertThrows(AppException.class, () -> userService.fallbackResponse(new RuntimeException("DB Error")));
+//        var exception = assertThrows(AppException.class, () -> userService.fallbackResponse(new RuntimeException("DB
+// Error")));
 //
 //        // Then
 //        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SERVICE_UNAVAILABLE);
 //    }
 //
-//}
+// }
 
 package ctv.core_service.service;
 
-import ctv.core_service.dto.request.UserCreationRequest;
-import ctv.core_service.dto.response.UserResponse;
-import ctv.core_service.entity.Role;
-import ctv.core_service.entity.User;
-import ctv.core_service.exception.AppException;
-import ctv.core_service.exception.ErrorCode;
-import ctv.core_service.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
-import io.github.resilience4j.retry.annotation.Retry;
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -133,13 +132,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDateTime;
-
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import ctv.core_service.dto.request.UserCreationRequest;
+import ctv.core_service.dto.response.UserResponse;
+import ctv.core_service.entity.Role;
+import ctv.core_service.entity.User;
+import ctv.core_service.exception.AppException;
+import ctv.core_service.exception.ErrorCode;
+import ctv.core_service.repository.UserRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -271,7 +271,8 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("DB Error"));
 
         // When
-        var exception = assertThrows(AppException.class, () -> userService.fallbackResponseCircuitBreaker(new RuntimeException("DB Error")));
+        var exception = assertThrows(
+                AppException.class, () -> userService.fallbackResponseCircuitBreaker(new RuntimeException("DB Error")));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SERVICE_UNAVAILABLE);
@@ -283,7 +284,8 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("Retry Error"));
 
         // When
-        var exception = assertThrows(AppException.class, () -> userService.fallbackResponseRetry(new RuntimeException("Retry Error")));
+        var exception = assertThrows(
+                AppException.class, () -> userService.fallbackResponseRetry(new RuntimeException("Retry Error")));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.TOO_MANY_ATTEMPTS);
@@ -295,7 +297,9 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("Rate Limit Exceeded"));
 
         // When
-        var exception = assertThrows(AppException.class, () -> userService.fallbackResponseRateLimiter(new RuntimeException("Rate Limit Exceeded")));
+        var exception = assertThrows(
+                AppException.class,
+                () -> userService.fallbackResponseRateLimiter(new RuntimeException("Rate Limit Exceeded")));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.RATE_LIMIT_EXCEEDED);
@@ -307,7 +311,9 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("System Overloaded"));
 
         // When
-        var exception = assertThrows(AppException.class, () -> userService.fallbackResponseBulkhead(new RuntimeException("System Overloaded")));
+        var exception = assertThrows(
+                AppException.class,
+                () -> userService.fallbackResponseBulkhead(new RuntimeException("System Overloaded")));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SYSTEM_OVERLOADED);
@@ -319,7 +325,9 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUserName(anyString())).thenThrow(new RuntimeException("Time Limit Exceeded"));
 
         // When
-        var exception = assertThrows(AppException.class, () -> userService.fallbackResponseTimeLimiter(new RuntimeException("Time Limit Exceeded")));
+        var exception = assertThrows(
+                AppException.class,
+                () -> userService.fallbackResponseTimeLimiter(new RuntimeException("Time Limit Exceeded")));
 
         // Then
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.SYSTEM_OVERLOADED);

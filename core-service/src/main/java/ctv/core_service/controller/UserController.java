@@ -4,15 +4,11 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import ctv.core_service.dto.request.UserCreationRequest;
@@ -28,11 +24,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "User Management", description = "Operations related to User entity")
 @RequestMapping("/users")
 @Slf4j
@@ -40,7 +36,6 @@ public class UserController {
 
     private final UserService userService;
     private final MessageSource messageSource;
-
 
     @Operation(summary = "Get all list user", description = "")
     @ApiResponses(
@@ -72,9 +67,7 @@ public class UserController {
     public ResponseEntity<ApiResponseWrapper<List<UserResponse>>> getAllUser() {
         ApiResponseWrapper<List<UserResponse>> response = new ApiResponseWrapper<>(
                 HttpStatus.OK.value(),
-                messageSource.getMessage("message.get.all.user.success",
-                        null,
-                        LocaleContextHolder.getLocale()),
+                messageSource.getMessage("message.get.all.user.success", null, LocaleContextHolder.getLocale()),
                 userService.getAllUser());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -231,7 +224,6 @@ public class UserController {
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
     @PreAuthorize("hasRole('USER')")
-
     @GetMapping("/my-infor")
     public ResponseEntity<ApiResponseWrapper<UserResponse>> getMyInfor() {
         ApiResponseWrapper<UserResponse> response = new ApiResponseWrapper<>(

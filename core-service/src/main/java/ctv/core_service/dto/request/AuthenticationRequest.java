@@ -1,9 +1,9 @@
 package ctv.core_service.dto.request;
 
+import java.io.Serializable;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor

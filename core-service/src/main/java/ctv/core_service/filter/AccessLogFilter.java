@@ -1,20 +1,23 @@
 package ctv.core_service.filter;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -35,14 +38,19 @@ public class AccessLogFilter extends OncePerRequestFilter {
     }
 
     private void logRequest(ContentCachingRequestWrapper req, ContentCachingResponseWrapper res, long time) {
-        log.info("""
-                IP: {} | {} {} | Params: {} | Status: {} | {}ms
-                Request: {} | Response: {}
-                """,
+        log.info(
+                """
+				IP: {} | {} {} | Params: {} | Status: {} | {}ms
+				Request: {} | Response: {}
+				""",
                 Optional.ofNullable(req.getHeader("X-FORWARDED-FOR")).orElse(req.getRemoteAddr()),
-                req.getMethod(), req.getRequestURI(),
-                gson.toJson(req.getParameterMap()), res.getStatus(), time,
-                formatJson(req.getContentAsByteArray()), formatJson(res.getContentAsByteArray()));
+                req.getMethod(),
+                req.getRequestURI(),
+                gson.toJson(req.getParameterMap()),
+                res.getStatus(),
+                time,
+                formatJson(req.getContentAsByteArray()),
+                formatJson(res.getContentAsByteArray()));
     }
 
     private String formatJson(byte[] data) {

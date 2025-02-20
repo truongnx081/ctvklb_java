@@ -46,6 +46,20 @@ services:
         - ZOOKEEPER_SYNC_LIMIT=2
       ports:
         - '2181:2181'
+    zipkin:
+      image: openzipkin/zipkin:latest
+      container_name: zipkin
+      environment:
+        - STORAGE_TYPE=mem #memory
+      ports:
+        - 9411:9411
+    prometheus:
+      container_name: prometheus
+      image: bitnami/prometheus:latest
+      ports:
+        - "9091:9090"
+      volumes:
+        - ./prometheus.yml:/etc/prometheus/prometheus.yml
 volumes:
   cache:
     driver: local

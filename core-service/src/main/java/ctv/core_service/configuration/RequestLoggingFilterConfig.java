@@ -1,25 +1,25 @@
-//package ctv.core_service.configuration;
+// package ctv.core_service.configuration;
 //
-//import java.io.IOException;
+// import java.io.IOException;
 //
-//import jakarta.servlet.Filter;
-//import jakarta.servlet.FilterChain;
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
+// import jakarta.servlet.Filter;
+// import jakarta.servlet.FilterChain;
+// import jakarta.servlet.ServletException;
+// import jakarta.servlet.http.HttpServletRequest;
+// import jakarta.servlet.http.HttpServletResponse;
 //
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.web.filter.CommonsRequestLoggingFilter;
-//import org.springframework.web.filter.OncePerRequestFilter;
-//import org.springframework.web.util.ContentCachingRequestWrapper;
-//import org.springframework.web.util.ContentCachingResponseWrapper;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.web.filter.CommonsRequestLoggingFilter;
+// import org.springframework.web.filter.OncePerRequestFilter;
+// import org.springframework.web.util.ContentCachingRequestWrapper;
+// import org.springframework.web.util.ContentCachingResponseWrapper;
 //
-//import lombok.extern.slf4j.Slf4j;
+// import lombok.extern.slf4j.Slf4j;
 //
-//@Configuration
-//@Slf4j
-//public class RequestLoggingFilterConfig {
+// @Configuration
+// @Slf4j
+// public class RequestLoggingFilterConfig {
 //
 //    @Bean
 //    public CommonsRequestLoggingFilter logFilter() {
@@ -47,7 +47,8 @@
 //                filterChain.doFilter(requestWrapper, responseWrapper);
 //
 //                // Ghi lại các thông tin request và response sau khi đã xử lý
-//                String requestBody = new String(requestWrapper.getContentAsByteArray(), request.getCharacterEncoding());
+//                String requestBody = new String(requestWrapper.getContentAsByteArray(),
+// request.getCharacterEncoding());
 //                String responseBody =
 //                        new String(responseWrapper.getContentAsByteArray(), response.getCharacterEncoding());
 //
@@ -60,4 +61,4 @@
 //            }
 //        };
 //    }
-//}
+// }

@@ -1,12 +1,7 @@
 package ctv.core_service.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.LocalDateTime;
 
-import ctv.core_service.dto.request.UserCreationRequest;
-import ctv.core_service.dto.response.UserResponse;
-import ctv.core_service.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -21,7 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import ctv.core_service.dto.request.UserCreationRequest;
+import ctv.core_service.dto.response.UserResponse;
+import ctv.core_service.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
@@ -64,24 +65,20 @@ public class UserControllerTest {
                 .build();
     }
 
-
     @Test
     void createUser_validRequest_success() throws Exception {
-        //Given: du lieu dau vao, da biet truoc
-        ObjectMapper objectMapper= new ObjectMapper();
+        // Given: du lieu dau vao, da biet truoc
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        String content=objectMapper.writeValueAsString(request);
-        //when: khi request api
-        //then: khi request xay ra thi
-        Mockito.when(userService.createUser(ArgumentMatchers.any()))
-                .thenReturn(userResponse);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users")
+        String content = objectMapper.writeValueAsString(request);
+        // when: khi request api
+        // then: khi request xay ra thi
+        Mockito.when(userService.createUser(ArgumentMatchers.any())).thenReturn(userResponse);
+        mockMvc.perform(MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(content))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("data.id").value(1)
-                );
+                .andExpect(MockMvcResultMatchers.jsonPath("data.id").value(1));
     }
 
     @Test
@@ -97,8 +94,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(content))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userName").value("Username must be at least 5 characters"));
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.userName").value("Username must be at least 5 characters"));
     }
-
-
 }
