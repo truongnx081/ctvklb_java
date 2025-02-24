@@ -55,7 +55,7 @@ public class UserController {
 						"userName": "john_doe2",
 						"lastName": "Doe",
 						"firstName": "John",
-						"email": "john.doe@example.com",
+						"email": "john.doe@example.com",    
 						"password": "password123",
 						"role": "ADMIN"
 					}

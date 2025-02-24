@@ -66,6 +66,7 @@ public class UserControllerTest {
     }
 
     @Test
+
     void createUser_validRequest_success() throws Exception {
         // Given: du lieu dau vao, da biet truoc
         ObjectMapper objectMapper = new ObjectMapper();
