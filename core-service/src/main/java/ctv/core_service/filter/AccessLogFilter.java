@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Order(1)
 public class AccessLogFilter extends OncePerRequestFilter {
     private static final Gson gson = new Gson();
-    private static final Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create(); // Format JSON đẹp
+    private static final Gson gsonPretty = new GsonBuilder().setPrettyPrinting().create(); // Format JSON
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
@@ -44,22 +44,22 @@ public class AccessLogFilter extends OncePerRequestFilter {
         String maskedResponseBody = maskSensitiveData(formatJsonPretty(res.getContentAsByteArray()));
 
         log.info(
-                "\nIP: {}\n"
-                + "Method: {}\n"
-                + "URI: {}\n"
-                + "Params: {}\n"
-                + "Status: {}\n"
-                + "Time: {}ms\n"
-                + "Request:\n{}\n"
-                + "Response:\n{}\n",
-                Optional.ofNullable(req.getHeader("X-FORWARDED-FOR")).orElse(req.getRemoteAddr()),
-                req.getMethod(),
-                req.getRequestURI(),
-                gson.toJson(req.getParameterMap()),
-                res.getStatus(),
-                time,
-                maskedRequestBody,
-                maskedResponseBody
+            "\nIP: {}\n"
+            + "Method: {}\n"
+            + "URI: {}\n"
+            + "Params: {}\n"
+            + "Status: {}\n"
+            + "Time: {}ms\n"
+            + "Request:\n{}\n"
+            + "Response:\n{}\n",
+            Optional.ofNullable(req.getHeader("X-FORWARDED-FOR")).orElse(req.getRemoteAddr()),
+            req.getMethod(),
+            req.getRequestURI(),
+            gson.toJson(req.getParameterMap()),
+            res.getStatus(),
+            time,
+            maskedRequestBody,
+            maskedResponseBody
         );
     }
 
@@ -72,7 +72,7 @@ public class AccessLogFilter extends OncePerRequestFilter {
             if (data.containsKey("token")) {
                 data.put("token", "******");
             }
-            return gsonPretty.toJson(data); // Format JSON đẹp
+            return gsonPretty.toJson(data); // Format JSON
         } catch (Exception e) {
             return json;
         }
