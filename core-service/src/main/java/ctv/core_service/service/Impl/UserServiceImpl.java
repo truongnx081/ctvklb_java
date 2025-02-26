@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUserName(request.getUserName())) {
-
+            log.error("User existed: {}", request.getUserName());
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
                 .body("Hello " + request.getUserName())
                 .build();
         kafkaTemplate.send("notification-delivery", notificationEvent);
-        log.info("Message DUbbo: "+notificationService.sendNotification(request.getUserName()));
+        log.info("Message DUbbo: " + notificationService.sendNotification(request.getUserName()));
         return userMapper.toUserResponse(user);
     }
 
@@ -98,7 +98,6 @@ public class UserServiceImpl implements UserService {
     @Cacheable(cacheNames = "user:details", key = "#userId")
     @Override
     public UserResponse getUserById(Long userId) {
-        log.info("Fetching user {} from database", userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         return userMapper.toUserResponse(user);

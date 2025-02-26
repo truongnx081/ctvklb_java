@@ -13,13 +13,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     private final MessageSource messageSource;
+
     //    @ExceptionHandler(value = Exception.class)
     //    ResponseEntity<ErrorResponse> handlingRuntimeException(RuntimeException exception) {
     //        ErrorResponse errorResponse = new ErrorResponse();

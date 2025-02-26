@@ -1,6 +1,5 @@
 package ctv.core_service.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +14,16 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 import ctv.core_service.exception.CustomAccessDeniedHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-    private final String[] PUBLIC_ENDPOINTS = {
+    private static final String[] PUBLIC_ENDPOINTS = {
         "/auth/token",
         "/auth/introspect",
         "/auth/logout",
@@ -33,14 +34,9 @@ public class SecurityConfig {
         "/actuator/**",
     };
 
-    @Autowired
-    private CustomJwtDecoder customJwtDecoder;
-
-    @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @Autowired
-    MessageSource messageSource;
+    private final CustomJwtDecoder customJwtDecoder;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final MessageSource messageSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

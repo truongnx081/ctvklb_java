@@ -1,6 +1,14 @@
 version: '3.6'
 
 services:
+    mysql:
+      image: mysql:latest
+      restart: always
+      container_name: mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: "11111"
+      ports:
+        - "3307:3306"
     cache:
       image: redis:6.2-alpine
       restart: always
@@ -60,6 +68,40 @@ services:
         - "9091:9090"
       volumes:
         - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+    keycloak_web:
+      image: quay.io/keycloak/keycloak:23.0.2
+      container_name: keycloak_web
+      environment:
+        KC_DB: postgres
+        KC_DB_URL: jdbc:postgresql://keycloakdb:5432/keycloak
+        KC_DB_USERNAME: keycloak
+        KC_DB_PASSWORD: keycloak
+
+        KC_HOSTNAME: localhost
+        KC_HOSTNAME_PORT: 8080
+        KC_HOSTNAME_STRICT: 'false'
+        KC_HOSTNAME_STRICT_HTTPS: 'false'
+
+        KC_LOG_LEVEL: info
+        KC_METRICS_ENABLED: 'true'
+        KC_HEALTH_ENABLED: 'true'
+
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+      command: start-dev
+      depends_on:
+        - keycloakdb
+      ports:
+        - '8080:8080'
+
+    keycloakdb:
+      image: postgres:16
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: keycloak
+
 volumes:
   cache:
     driver: local

@@ -37,31 +37,32 @@ public class UserController {
     private final UserService userService;
     private final MessageSource messageSource;
 
-    @Operation(summary = "Get all list user", description = "")
-    @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "successfully",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = UserResponse.class),
-                                        examples =
-                                                @ExampleObject(
-                                                        value =
-                                                                """
-					{
-						"userName": "john_doe2",
-						"lastName": "Doe",
-						"firstName": "John",
-						"email": "john.doe@example.com",    
-						"password": "password123",
-						"role": "ADMIN"
-					}
-				"""))),
-                @ApiResponse(responseCode = "404", description = "Empty list ")
-            })
+    @Operation(summary = "Get all list user", description = "Retrieve the list of all users."
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved user list",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = UserResponse.class),
+                examples = @ExampleObject(
+                        value = """
+                {
+                    "userName": "john_doe2",
+                    "lastName": "Doe",
+                    "firstName": "John",
+                    "email": "john.doe@example.com",
+                    "password": "password123",
+                    "role": "ADMIN"
+                }
+                """
+                   )
+                )
+            ),
+            @ApiResponse(responseCode = "404", description = "Empty list"
+        )
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<ApiResponseWrapper<List<UserResponse>>> getAllUser() {
@@ -74,28 +75,27 @@ public class UserController {
 
     @Operation(summary = "Create user account", description = "")
     @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "successfully",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = UserResponse.class),
-                                        examples =
-                                                @ExampleObject(
-                                                        value =
-                                                                """
-						{
-							"userName": "john_doe2",
-							"lastName": "Doe",
-							"firstName": "John",
-							"email": "john.doe@example.com",
-							"password": "password123",
-							"role": "ADMIN"
-							}
-						""")))
-            })
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "successfully",
+                content =
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = UserResponse.class),
+                        examples =
+                            @ExampleObject(
+                                value = """
+                {
+                    "userName": "john_doe2",
+                    "lastName": "Doe",
+                    "firstName": "John",
+                    "email": "john.doe@example.com",
+                    "password": "password123",
+                    "role": "ADMIN"
+                    }
+                """)))
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<ApiResponseWrapper<UserResponse>> createUser(
@@ -109,30 +109,29 @@ public class UserController {
 
     @Operation(summary = "Update user by ID", description = "Retrieve user information based on the provided user ID")
     @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "Successfully",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = UserResponse.class),
-                                        examples =
-                                                @ExampleObject(
-                                                        value =
-                                                                """
-				{
-					"status": 200,
-					"message": "User retrieved successfully",
-					"data": {
-						"userName": "john_doe",
-						"lastName": "Doe",
-						"firstName": "John",
-						"email": "john.doe@example.com",
-						"role": "ADMIN"
-					}
-				}
-			"""))),
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully",
+                content =
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = UserResponse.class),
+                        examples =
+                            @ExampleObject(
+                                value = """
+                                {
+                                    "status": 200,
+                                    "message": "User retrieved successfully",
+                                    "data": {
+                                        "userName": "john_doe",
+                                        "lastName": "Doe",
+                                        "firstName": "John",
+                                        "email": "john.doe@example.com",
+                                        "role": "ADMIN"
+                                    }
+                                }
+                            """))),
                 @ApiResponse(responseCode = "404", description = "User not found"),
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
@@ -149,30 +148,29 @@ public class UserController {
 
     @Operation(summary = "Get user by ID", description = "Retrieve user information based on the provided user ID")
     @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "Successfully retrieved user",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = UserResponse.class),
-                                        examples =
-                                                @ExampleObject(
-                                                        value =
-                                                                """
-				{
-					"status": 200,
-					"message": "User retrieved successfully",
-					"data": {
-						"userName": "john_doe",
-						"lastName": "Doe",
-						"firstName": "John",
-						"email": "john.doe@example.com",
-						"role": "ADMIN"
-					}
-				}
-			"""))),
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved user",
+                content =
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = UserResponse.class),
+                        examples =
+                            @ExampleObject(
+                                value = """
+                                {
+                                    "status": 200,
+                                    "message": "User retrieved successfully",
+                                    "data": {
+                                        "userName": "john_doe",
+                                        "lastName": "Doe",
+                                        "firstName": "John",
+                                        "email": "john.doe@example.com",
+                                        "role": "ADMIN"
+                                    }
+                                }
+                            """))),
                 @ApiResponse(responseCode = "404", description = "User not found"),
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
@@ -201,25 +199,24 @@ public class UserController {
 
     @Operation(summary = "Delete user by ID", description = "Retrieve user information based on the provided user ID")
     @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "Successfully",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = String.class),
-                                        examples =
-                                                @ExampleObject(
-                                                        value =
-                                                                """
-				{
-					"status": 200,
-					"message": "Delete user successfully",
-					"data": null
-					}
-				}
-			"""))),
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully",
+                content =
+                    @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = String.class),
+                        examples =
+                            @ExampleObject(
+                                value = """
+                                    {
+                                        "status": 200,
+                                        "message": "Delete user successfully",
+                                        "data": null
+                                    }
+                                }
+                            """))),
                 @ApiResponse(responseCode = "404", description = "User not found"),
                 @ApiResponse(responseCode = "500", description = "Internal server error")
             })
