@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationRequest implements Serializable {
-    String username;
+    String email;
+//    String username;
     String password;
 }

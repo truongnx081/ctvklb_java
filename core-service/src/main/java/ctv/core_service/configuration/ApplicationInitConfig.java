@@ -29,10 +29,16 @@ public class ApplicationInitConfig {
     static final String ADMIN_PASSWORD = "admin123";
 
     @NonFinal
+    static final String ADMIN_EMAIL = "admin123@gmail.com";
+
+    @NonFinal
     static final String USER_USER_NAME = "user123";
 
     @NonFinal
     static final String USER_PASSWORD = "user123";
+
+    @NonFinal
+    static final String USER_EMAIL = "user123@gmail.com";
 
     @Bean
     @ConditionalOnProperty(
@@ -46,6 +52,7 @@ public class ApplicationInitConfig {
                 User admin = User.builder()
                         .userName(ADMIN_USER_NAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
+                        .email(ADMIN_EMAIL)
                         .role(Role.ADMIN)
                         .build();
                 userRepository.save(admin);
@@ -54,6 +61,7 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .userName(USER_USER_NAME)
                         .password(passwordEncoder.encode(USER_PASSWORD))
+                        .email(USER_EMAIL)
                         .role(Role.USER)
                         .build();
                 userRepository.save(user);
